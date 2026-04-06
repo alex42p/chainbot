@@ -20,14 +20,20 @@ TRIGGER_KEYWORDS = [
     "beep",
     "catch me", # if you can
     "chain",
+    "children",
     "chud",
+    "fcg", 
     "fort", # nite
+    "game",
+    "gaming",
     "gimme that", # crown
     "papa john",
     "pizza",
+    "pookie",
     "rice",
     "star wars",
     "starwars",
+    "techno union",
     "what the", # beep
 ]
 

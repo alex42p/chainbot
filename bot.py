@@ -78,7 +78,7 @@ async def on_message(message: discord.Message):
 
     chat_history.append({"role": "user", "content": content})
     chat_history.append({"role": "assistant", "content": response})
-    if len(chat_history) > 3: # add 2 msgs, pop 2 msgs
+    if len(chat_history) > 6: # add 2 msgs, pop 2 msgs
         chat_history.pop(0)
         chat_history.pop(0)
 

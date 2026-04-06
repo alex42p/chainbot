@@ -21,9 +21,11 @@ TRIGGER_KEYWORDS = [
     "catch me", # if you can
     "chain",
     "chud",
-    "fortnite",
+    "fort", # nite
     "gimme that", # crown
+    "papa john",
     "pizza",
+    "rice",
     "star wars",
     "starwars",
     "what the", # beep

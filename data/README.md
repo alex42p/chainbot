@@ -1,6 +1,6 @@
 # Data Collection Tools
 
-This folder contains scripts to collect and process persona samples for the ChainBot. These samples are used to train the AI to mimic the target user's style.
+This folder contains scripts to collect and process persona samples for the bot. These samples are used to ground the AI so it mimics the target user's style.
 
 ## Files
 
@@ -15,12 +15,13 @@ A Discord scraper that collects messages from specified channels in real-time.
 - `DISCORD_CHANNEL_ID`: Comma-separated list of channel IDs to scrape.
 - `DISCORD_TEST_CHANNEL_ID`: For testing mode.
 - `USER_ID`: The Discord user ID of the persona to mimic.
-- `PERSONA_DATASET_PATH`: Path to the output dataset file (e.g., `data/samples.txt`).
+- `DATASET_PATH`: Path to the output dataset file (e.g., `data/samples.txt`).
 
 **Usage**:
-1. Set environment variables in `.env`.
-2. Run `python data/collector_bot.py`.
-3. It will log in, collect messages from channels, and overwrite the dataset file with new samples.
+1. Create another [Discord bot](https://discord.com/developers/applications) to scrape message data.
+2. Set environment variables in `.env`.
+3. Run `python data/collector_bot.py`.
+4. It will log in, collect messages from channels, and overwrite the dataset file with new samples.
 
 **Notes**:
 - Filters out short messages, links, mentions.

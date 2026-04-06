@@ -1,0 +1,24 @@
+# Environment
+.env
+.venv
+.venv/
+
+# App too small for packaging
+.dist/
+
+# Caches
+__pycache__/
+.mypy_cache/
+
+# Training Data
+data/*.txt
+data/Messages/
+
+# Logs
+logs/
+
+# Personal TODO list
+TODO.md
+
+# Initial bot testing files
+test*.py

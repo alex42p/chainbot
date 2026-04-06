@@ -7,7 +7,6 @@ A Discord AI bot that mimics a specific user's persona using AWS Bedrock LLM and
 - **Persona Mimicry**: Uses a dataset of real messages to ground the AI's responses in the target persona's style.
 - **Keyword Triggers**: Responds to mentions or specific keywords like "bot", "chain", etc.
 - **AWS Bedrock Integration**: Leverages Amazon Nova Micro model for fast, cost-effective responses.
-- **Logging**: Saves bot responses to `logs/messages.log` for monitoring and debugging.
 - **Data Collection Tools**: Scripts to collect and process persona samples from Discord.
 
 ## Project Structure
@@ -17,20 +16,11 @@ root/
 ├── bot.py                  # Main Discord bot client and event handling
 ├── llm.py                  # AWS Bedrock LLM integration for generating responses
 ├── persona.py              # Loads and samples persona messages from dataset
-├── test_bot.py             # Unit tests for bot functionality
-├── test_llm.py             # Tests for LLM integration
-├── test_persona.py         # Tests for persona loading
 ├── requirements.txt        # Python dependencies
-├── logs/
-│   └── messages.log        # Bot response logs (created automatically)
 ├── data/
 │   ├── README.md           # Explanation of data collection tools
 │   ├── collector_bot.py    # Discord scraper for collecting persona messages
-│   ├── collector_easy.py   # Processes Discord data export JSON to create dataset
-│   ├── __chain_samples.txt # Backup or example dataset
-│   ├── alex_samples.txt    # Additional sample data
-│   ├── samples.txt         # More sample messages
-│   └── Messages/           # Discord data export (JSON files)
+│   └── collector_easy.py   # Processes Discord data export JSON to create dataset
 └── README.md               # This file
 ```
 
@@ -42,14 +32,13 @@ root/
 - **requirements.txt**: Lists Python packages needed (discord.py, boto3, python-dotenv, etc.).
 - **data/collector_bot.py**: Scrapes messages from specified Discord channels using a scraper token, filters for the target user, and saves to dataset.
 - **data/collector_easy.py**: Processes JSON files from Discord's data export to extract messages and write to dataset file.
-- **data/Messages/**: Contains exported Discord data in JSON format for processing.
 
 ## Setup
 
 ### Prerequisites
 
 - Python 3.8+
-- AWS account with Bedrock access
+- AWS account with Bedrock access (optionally also S3)
 - Discord bot token
 
 ### 1. Install Dependencies
@@ -67,6 +56,8 @@ DISCORD_TOKEN=your_discord_bot_token
 AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 AWS_REGION=us-east-1
+S3_BUCKET=bucket_name # If using S3 instead of locally stored file
+S3_KEY=filename
 DATASET_PATH=data/samples.txt  # Path to persona dataset file
 ```
 
@@ -113,4 +104,4 @@ See `data/README.md` for detailed instructions on collectors.
 - **Trigger Keywords**: Edit `TRIGGER_KEYWORDS` in `bot.py`.
 - **LLM Model**: Change `MODEL_ID` in `llm.py` (ensure Bedrock access).
 - **Persona Samples**: Adjust `MAX_PERSONA_SAMPLES` in `persona.py` for prompt size.
-- **Logging**: Modify logging config in `bot.py` for different levels or formats.
+- **Logging**: Modify logging configs per file for different levels or formats.

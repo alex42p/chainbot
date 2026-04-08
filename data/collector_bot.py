@@ -8,8 +8,11 @@ periodically (e.g. once a week) to keep the dataset up to date with Chainman's l
 """
 
 import os
+import sys
 import discord
 from datetime import datetime
+import boto3
+from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -23,6 +26,7 @@ intents.guilds = True
 client = discord.Client(intents=intents)
 
 TESTING = False # change to False when collecting real user's data
+WRITE_TO_S3 = True # set to True to upload the dataset to S3 after writing to local file
 
 if not all([DISCORD_SCRAPER_TOKEN, DISCORD_CHANNEL_ID, DATASET_PATH]):
     raise ValueError(
@@ -39,8 +43,19 @@ async def on_ready():
         for msg in messages:
             f.write(msg + "\n")
 
+    if WRITE_TO_S3: # after writing to file, upload to S3 bucket if True
+        print(f"Uploading dataset to S3 bucket {os.getenv('S3_BUCKET')}...")
+        s3_client = boto3.client("s3")
+        try:
+            s3_client.upload_file(DATASET_PATH, os.getenv("S3_BUCKET"), os.getenv("S3_KEY"))
+            print(f"Uploaded dataset of {len(messages)} messages to {os.getenv('S3_BUCKET')}")
+        except ClientError as e:
+            print(f"Error uploading to S3: {e.response['Error']['Message']}")
+        
+        # delete the local file after uploading to S3 if you don't want to keep it
+        # os.remove(DATASET_PATH)
+    
     print(f"Collected and saved {len(messages)} messages")
-
     # await client.close()
 
 
@@ -90,19 +105,9 @@ async def collect_messages() -> list[str]:
             print(f"Invalid channel ID: {cid}")
     return messages
 
-def write_messages():
-    """Append collected messages to the dataset file, one per line."""
-    messages = client.loop.run_until_complete(collect_messages())
-    with open(DATASET_PATH, "w", encoding="utf-8") as f:
-        for msg in messages:
-            f.write(msg + "\n")
-    print(f"Collected and saved {len(messages)} message(s) to '{DATASET_PATH}'.")
-
-
-if __name__ == "__main__": #TODO: improve ts 
+if __name__ == "__main__":
     if not DISCORD_SCRAPER_TOKEN:
         raise ValueError("DISCORD_SCRAPER_TOKEN is not set in your .env file.")
     if not DATASET_PATH:
         raise ValueError("DATASET_PATH is not set in your .env file.")
     client.run(DISCORD_SCRAPER_TOKEN)
-    # write_messages()

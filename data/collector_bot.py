@@ -103,6 +103,6 @@ if __name__ == "__main__": #TODO: improve ts
     if not DISCORD_SCRAPER_TOKEN:
         raise ValueError("DISCORD_SCRAPER_TOKEN is not set in your .env file.")
     if not DATASET_PATH:
-        raise ValueError("PERSONA_DATASET_PATH is not set in your .env file.")
+        raise ValueError("DATASET_PATH is not set in your .env file.")
     client.run(DISCORD_SCRAPER_TOKEN)
     # write_messages()

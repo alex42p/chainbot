@@ -19,6 +19,3 @@ logs/
 
 # Personal TODO list
 TODO.md
-
-# Initial bot testing files
-test*.py

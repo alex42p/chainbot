@@ -10,11 +10,19 @@ periodically (e.g. once a week) to keep the dataset up to date with Chainman's l
 import os
 import sys
 import discord
+import logging
 from datetime import datetime
 import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 load_dotenv()
+
+logger = logging.getLogger("data_scraper")
+handler = logging.FileHandler("logs/data_scraper.log", encoding="utf-8")
+handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s - %(message)s"))
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+logger.propagate = False
 
 DISCORD_SCRAPER_TOKEN = os.getenv("DISCORD_SCRAPER_TOKEN")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID", "") # can be one or more comma-separated IDs
@@ -36,7 +44,7 @@ if not all([DISCORD_SCRAPER_TOKEN, DISCORD_CHANNEL_ID, DATASET_PATH]):
 
 @client.event
 async def on_ready():
-    print(f"Logged in as {client.user}")
+    logger.info(f"Logged in as {client.user}")
     messages = await collect_messages()
 
     with open(DATASET_PATH, "w", encoding="utf-8") as f:
@@ -44,19 +52,20 @@ async def on_ready():
             f.write(msg + "\n")
 
     if WRITE_TO_S3: # after writing to file, upload to S3 bucket if True
-        print(f"Uploading dataset to S3 bucket {os.getenv('S3_BUCKET')}...")
+        logger.info(f"Uploading dataset to S3 bucket {os.getenv('S3_BUCKET')}...")
         s3_client = boto3.client("s3")
         try:
             s3_client.upload_file(DATASET_PATH, os.getenv("S3_BUCKET"), os.getenv("S3_KEY"))
-            print(f"Uploaded dataset of {len(messages)} messages to {os.getenv('S3_BUCKET')}")
+            logger.info(f"Uploaded dataset of {len(messages)} messages to {os.getenv('S3_BUCKET')}")
         except ClientError as e:
-            print(f"Error uploading to S3: {e.response['Error']['Message']}")
-        
+            logger.error(f"Error uploading to S3: {e.response['Error']['Message']}")
+
         # delete the local file after uploading to S3 if you don't want to keep it
         # os.remove(DATASET_PATH)
     
-    print(f"Collected and saved {len(messages)} messages")
-    # await client.close()
+    logger.info(f"Collected and saved {len(messages)} messages")
+    await client.close()
+    sys.exit(0)
 
 
 def check_channels() -> list[int]:
@@ -72,12 +81,12 @@ def check_channels() -> list[int]:
             try:
                 channel_ids.append(int(cid.strip()))
             except ValueError:
-                print(f"Invalid channel ID: {cid}")
+                logger.error(f"Invalid channel ID: {cid}")
     else: # just a single channel ID
         try:
             channel_ids.append(int(ids))
         except ValueError:
-            print(f"Invalid channel ID: {ids}")
+            logger.error(f"Invalid channel ID: {ids}")
     return channel_ids
 
 async def collect_messages() -> list[str]:
@@ -95,14 +104,14 @@ async def collect_messages() -> list[str]:
             if not channel:
                 continue
             if isinstance(channel, discord.abc.Messageable): # non-Messageable channels do not have history
-                print(f"Collecting messages from channel: {channel.name} (ID: {cid})")
+                logger.info(f"Collecting messages from channel: {channel.guild} - {channel.name}")
                 async for message in channel.history(limit=None, oldest_first=True, after=datetime(2023, 1, 1)): # Adjust limit as needed
                     if message.author.id == target_user_id and message.content.strip() and not message.content.startswith("http") and not message.content.startswith("@") and not message.content.startswith("<@") and len(message.content) > 3:
                         messages.append(message.content)
         except discord.HTTPException as e:
-            print(f"Error fetching channel {cid}: {e}")
+            logger.error(f"Error fetching channel {cid}: {e}")
         except discord.InvalidData:
-            print(f"Invalid channel ID: {cid}")
+            logger.error(f"Invalid channel ID: {cid}")
     return messages
 
 if __name__ == "__main__":

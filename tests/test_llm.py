@@ -3,7 +3,7 @@ import importlib
 import sys
 import boto3
 from botocore.exceptions import ClientError
-
+from typing import Any
 
 def import_llm(monkeypatch):
     class FakeBedrockClient:
@@ -30,7 +30,7 @@ def test_build_system_prompt_includes_persona_samples(monkeypatch):
 
 
 def test_generate_response_returns_trimmed_text(monkeypatch):
-    llm = import_llm(monkeypatch)
+    llm: Any = import_llm(monkeypatch)
 
     def fake_converse(**kwargs):
         return {"output": {"message": {"content": [{"text": " hi there "}]}}}
@@ -48,7 +48,7 @@ def test_generate_response_returns_trimmed_text(monkeypatch):
 
 
 def test_generate_response_handles_client_error(monkeypatch):
-    llm = import_llm(monkeypatch)
+    llm: Any = import_llm(monkeypatch)
 
     def fake_converse(**kwargs):
         raise ClientError({"Error": {"Message": "boom"}}, "Converse")
@@ -66,7 +66,7 @@ def test_generate_response_handles_client_error(monkeypatch):
 
 
 def test_generate_response_handles_generic_exception(monkeypatch):
-    llm = import_llm(monkeypatch)
+    llm: Any = import_llm(monkeypatch)
 
     def fake_converse(**kwargs):
         raise RuntimeError("unexpected")

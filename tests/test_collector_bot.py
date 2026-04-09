@@ -2,6 +2,7 @@ import asyncio
 import importlib
 import os
 import sys
+from typing import Any
 
 import pytest
 
@@ -17,7 +18,7 @@ def import_collector_bot(monkeypatch, dataset_path):
 
 def test_check_channels_returns_single_and_multiple_ids(monkeypatch, tmp_path):
     dataset_path = tmp_path / "dataset.txt"
-    collector_bot = import_collector_bot(monkeypatch, dataset_path)
+    collector_bot: Any = import_collector_bot(monkeypatch, dataset_path)
 
     collector_bot.DISCORD_CHANNEL_ID = "123, 456, not-a-number"
     collector_bot.TESTING = False
@@ -38,7 +39,7 @@ def test_collect_messages_raises_when_user_id_missing(monkeypatch, tmp_path):
 
 def test_collect_messages_filters_history(monkeypatch, tmp_path):
     dataset_path = tmp_path / "dataset.txt"
-    collector_bot = import_collector_bot(monkeypatch, dataset_path)
+    collector_bot: Any = import_collector_bot(monkeypatch, dataset_path)
     monkeypatch.setenv("USER_ID", "42")
     collector_bot.TESTING = False
     collector_bot.check_channels = lambda: [123]

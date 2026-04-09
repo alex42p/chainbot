@@ -19,3 +19,7 @@ logs/
 
 # Personal TODO list
 TODO.md
+
+# Test coverage reports
+.coverage
+htmlcov/

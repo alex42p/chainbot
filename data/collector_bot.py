@@ -28,6 +28,9 @@ DISCORD_SCRAPER_TOKEN = os.getenv("DISCORD_SCRAPER_TOKEN")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID", "") # can be one or more comma-separated IDs
 DISCORD_TEST_CHANNEL_ID = os.getenv("DISCORD_TEST_CHANNEL_ID", "")
 DATASET_PATH = os.getenv("DATASET_PATH", "")
+S3_BUCKET = os.getenv("S3_BUCKET", "")
+S3_KEY = os.getenv("S3_KEY", "")
+
 intents = discord.Intents.default()
 intents.message_content = True # allows to read messages
 intents.guilds = True
@@ -52,11 +55,11 @@ async def on_ready():
             f.write(msg + "\n")
 
     if WRITE_TO_S3: # after writing to file, upload to S3 bucket if True
-        logger.info(f"Uploading dataset to S3 bucket {os.getenv('S3_BUCKET')}...")
+        logger.info(f"Uploading dataset to S3 bucket {S3_BUCKET}...")
         s3_client = boto3.client("s3")
         try:
-            s3_client.upload_file(DATASET_PATH, os.getenv("S3_BUCKET"), os.getenv("S3_KEY"))
-            logger.info(f"Uploaded dataset of {len(messages)} messages to {os.getenv('S3_BUCKET')}")
+            s3_client.upload_file(DATASET_PATH, S3_BUCKET, S3_KEY)
+            logger.info(f"Uploaded dataset of {len(messages)} messages to {S3_BUCKET}")
         except ClientError as e:
             logger.error(f"Error uploading to S3: {e.response['Error']['Message']}")
 

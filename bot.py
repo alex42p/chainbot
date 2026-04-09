@@ -16,6 +16,7 @@ logger.propagate = False
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 TRIGGER_KEYWORDS = [
+    "battle pass",
     "bot",
     "beep",
     "catch me", # if you can
@@ -27,10 +28,13 @@ TRIGGER_KEYWORDS = [
     "game",
     "gaming",
     "gimme that", # crown
+    "no cap",
     "papa john",
     "pizza",
     "pookie",
     "rice",
+    "skin",
+    "smash",
     "star wars",
     "starwars",
     "techno union",

@@ -23,6 +23,7 @@ TRIGGER_KEYWORDS = [
     "chain",
     "children",
     "chud",
+    "fall guys",
     "fcg", 
     "fort", # nite
     "game",
@@ -30,6 +31,7 @@ TRIGGER_KEYWORDS = [
     "gimme that", # crown
     "no cap",
     "papa john",
+    "pharm", 
     "pizza",
     "pookie",
     "rice",
@@ -38,6 +40,7 @@ TRIGGER_KEYWORDS = [
     "star wars",
     "starwars",
     "techno union",
+    "terraria",
     "what the", # beep
 ]
 

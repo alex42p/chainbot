@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger("bot")
-handler = logging.FileHandler("logs/messages.log", encoding="utf-8")
+handler = logging.FileHandler("logs/messages.log", mode='w', encoding="utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s - %(message)s"))
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)

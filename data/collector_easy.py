@@ -1,7 +1,15 @@
 import os
 import json
+import logging
 from dotenv import load_dotenv
 load_dotenv()
+
+logger = logging.getLogger("data_request")
+handler = logging.FileHandler("logs/data_request.log", mode='w', encoding="utf-8")
+handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s - %(message)s"))
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+logger.propagate = False
 
 DATASET_PATH = os.getenv("DATASET_PATH", "")
 if not DATASET_PATH:
@@ -42,9 +50,9 @@ def write_messages_from_data():
                                     output_file.write(content + "\n")
                                     total_messages += 1
                     except (json.JSONDecodeError, IOError) as e:
-                        print(f"Warning: Error reading {messages_file}: {e}")
+                        logger.warning(f"Error reading {messages_file}: {e}")
     
-    print(f"Successfully wrote {total_messages} messages to {DATASET_PATH}")
+    logger.info(f"Successfully wrote {total_messages} messages to {DATASET_PATH}")
 
 if __name__ == "__main__":
     write_messages_from_data()

@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger("data_scraper")
-handler = logging.FileHandler("logs/data_scraper.log", encoding="utf-8")
+handler = logging.FileHandler("logs/data_scraper.log", mode='w', encoding="utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s - %(message)s"))
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)

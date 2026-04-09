@@ -35,6 +35,7 @@ TRIGGER_KEYWORDS = [
     "pizza",
     "pookie",
     "rice",
+    "saber",
     "skin",
     "smash",
     "star wars",

@@ -32,7 +32,7 @@ TRIGGER_KEYWORDS = [
     "gimme that", # crown
     "kid",
     "no cap",
-    "papa john",
+    "papa", # john, dough, smurf
     "pharm", 
     "pizza",
     "pookie",
@@ -40,6 +40,7 @@ TRIGGER_KEYWORDS = [
     "saber",
     "skin",
     "smash",
+    "smurf",
     "star wars",
     "starwars",
     "techno union",

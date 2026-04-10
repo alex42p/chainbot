@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger("persona")
+os.makedirs("logs", exist_ok=True)
 handler = logging.FileHandler("logs/persona_setup.log", mode='w', encoding="utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s - %(message)s"))
 logger.addHandler(handler)

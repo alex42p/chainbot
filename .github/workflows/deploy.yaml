@@ -1,5 +1,7 @@
 # on manual merge to main, deploy to production 
 # (sign into EC2 and pull the latest code, then restart the bot)
+name: Deploy to EC2
+
 on:
   push:
     branches:
@@ -10,15 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Deploy to EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private_key.pem
-          chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $EC2_USER@$EC2_HOST "cd chainbot && git pull origin main && sudo systemctl restart chainbot"
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/chainbot
+            git pull origin main
+            sudo systemctl restart chainbot
+            sudo systemctl status chainbot --no-pager

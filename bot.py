@@ -22,7 +22,7 @@ TRIGGER_KEYWORDS = [
     "beep",
     "catch me", # if you can
     "chain",
-    "children",
+    "child",
     "chud",
     "fall guys",
     "fcg", 
@@ -30,6 +30,7 @@ TRIGGER_KEYWORDS = [
     "game",
     "gaming",
     "gimme that", # crown
+    "kid",
     "no cap",
     "papa john",
     "pharm", 

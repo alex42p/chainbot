@@ -13,6 +13,7 @@ AWS credentials are read from environment variables:
 import os
 import boto3
 import logging
+import random as r
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 load_dotenv()
@@ -26,6 +27,14 @@ logger.setLevel(logging.INFO)
 logger.propagate = False
 
 MODEL_ID = "us.amazon.nova-2-lite-v1:0" #"amazon.nova-micro-v1:0"
+
+backup_responses = [
+    "sksksksksks",
+    "catch me if you can",
+    "what the beep - i had an oopsie in my poopsie",
+    "beep you, you little beep child",
+    "no cappalacka-dappa-chappa",
+]
 
 # Bedrock client (initialized once)
 bedrock = boto3.client(
@@ -158,6 +167,10 @@ async def generate_response(
                 "temperature": 0.7
             }
         )
+
+        # say something quirky if chainbot shits the bed
+        if "The generated text has been blocked" in response["output"]["message"]["content"][0]["text"].strip():
+            return r.choice(backup_responses)
 
         return response["output"]["message"]["content"][0]["text"].strip()
 

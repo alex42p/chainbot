@@ -19,21 +19,31 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 TRIGGER_KEYWORDS = [
     "amogus",
     "amongus",
+    "among us",
+    "battle bus",
     "battle pass",
-    "bot",
     "beep",
+    "bot",
+    "brawl star",
+    "caracal",
     "catch me", # if you can
     "chain",
     "child",
     "chud",
+    "chun", #-li
+    "el primo",
+    "fade",
     "fall guys",
     "fcg", 
     "fort", # nite
     "game",
     "gaming",
     "gimme that", # crown
+    "gosha",
     "jiggy",
     "kid",
+    "low taper",
+    "massive",
     "no cap",
     "papa", # john, dough, smurf
     "pharm", 

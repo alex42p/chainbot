@@ -44,6 +44,7 @@ TRIGGER_KEYWORDS = [
     "kid",
     "low taper",
     "massive",
+    "meme",
     "no cap",
     "papa", # john, dough, smurf
     "pharm", 

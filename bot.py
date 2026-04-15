@@ -31,6 +31,7 @@ TRIGGER_KEYWORDS = [
     "child",
     "chud",
     "chun", #-li
+    "clash",
     "el primo",
     "fade",
     "fall guys",

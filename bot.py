@@ -101,7 +101,10 @@ async def on_message(message: discord.Message):
         return
         
     # Bot should ignore sticker-only messages (not fool-proof but whatever)
-    if content.startswith(':') and content.endswith(':'):
+    #if content.startswith(':') and content.endswith(':'):
+        #return
+        
+    if not content.strip():
         return
 
     # Use a random subset of persona samples on every request to limit prompt size.

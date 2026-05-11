@@ -99,6 +99,10 @@ async def on_message(message: discord.Message):
 
     if not is_mention and not is_keyword_trigger:
         return
+        
+    # Bot should ignore sticker-only messages (not fool-proof but whatever)
+    if content.startswith(':') and content.endswith(':'):
+        return
 
     # Use a random subset of persona samples on every request to limit prompt size.
     sampled_persona = sample_persona_samples(persona_samples)
